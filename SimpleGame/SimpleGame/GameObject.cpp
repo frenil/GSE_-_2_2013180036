@@ -12,7 +12,18 @@ CGameObject::~CGameObject()
 {
 }
 
+void CGameObject::Update()
+{
+	position =position + (moveto*speed);
+	if (position.x >= WINW/2|| position.x <= -(WINW/2))
+		moveto.x = moveto.x*-1;
+	if (position.y >= WINH/2 || position.y <= -(WINH/2))
+		moveto.y = moveto.y*-1;
+
+}
+
 void CGameObject::Render()
 {
 	renderer->DrawSolidRect(position.x, position.y, position.z, size, color.x, color.y, color.z, alpha);
 }
+
