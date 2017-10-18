@@ -8,3 +8,11 @@
 #define WINH 600
 
 using namespace std;
+
+
+struct OOBB {
+	float Left;
+	float Up;
+	float Right;
+	float Down;
+};

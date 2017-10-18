@@ -14,48 +14,46 @@ but WITHOUT ANY WARRANTY.
 #include "Dependencies\freeglut.h"
 
 #include "Renderer.h"
-
 #include "GameObject.h"
+#include "SceneMgr.h"
 
 #include <vector>
 
 Renderer *g_Renderer = nullptr;
-VerticalObject obj1(Vector(0, 0, 0), 20, Vector(1, 1, 0), 1);
-CGameObject obj2(Vector(-250,50,0),20,Vector(1,1,0),1);
+SceneMgr *Scene = nullptr;
 vector<CGameObject> objs;
 void RenderScene(void)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearColor(0.0f, 0.3f, 0.3f, 1.0f);
 
-	// Renderer Test
-	g_Renderer->DrawSolidRect(0, 0, 0, 4, 1, 0, 1, 1);
-	obj1.Render();
-	obj2.Render();
-	for (auto i = objs.begin(); i != objs.end(); ++i) {
-		i->Render();
-	}
+	Scene->Render();
 	glutSwapBuffers();
 }
 
 void Idle(void)
 {
-	obj1.Update();
-	obj2.Update();
-	for (auto i = objs.begin(); i != objs.end(); ++i) {
-		i->Update();
-	}
+	Scene->Update();
 	RenderScene();
 }
 
 void MouseInput(int button, int state, int x, int y)
 {
-	CGameObject ob(Vector(x - (WINW / 2), (WINH / 2) - y, 0), 10, Vector(1, 0, 0), 1);
-	ob.SetRenderer(g_Renderer);
-	objs.push_back(ob);
-	RenderScene();
-}
+	if (button == GLUT_LEFT_BUTTON&&state == GLUT_DOWN) {
+	}
+	if (button == GLUT_LEFT_BUTTON&&state == GLUT_UP) {
 
+		CGameObject ob(Vector(x - (WINW / 2), (WINH / 2) - y, 0), 10, Vector(1, 1, 1), 1);
+		Scene->AddObject(&ob, g_Renderer);
+	}
+	if (button == GLUT_RIGHT_BUTTON&&state == GLUT_DOWN) {
+	}
+	if (button == GLUT_RIGHT_BUTTON&&state == GLUT_UP) {
+		{
+		}
+	}
+			RenderScene();
+}
 void KeyInput(unsigned char key, int x, int y)
 {
 	RenderScene();
@@ -72,7 +70,7 @@ int main(int argc, char **argv)
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
 	glutInitWindowPosition(0, 0);
-	glutInitWindowSize(WINW,WINH);
+	glutInitWindowSize(WINW, WINH);
 	glutCreateWindow("Game Software Engineering KPU");
 
 	glewInit();
@@ -86,9 +84,12 @@ int main(int argc, char **argv)
 	}
 
 	// Initialize Renderer
-	g_Renderer = new Renderer(WINW,WINH);
-	obj1.SetRenderer(g_Renderer);
-	obj2.SetRenderer(g_Renderer);
+	g_Renderer = new Renderer(WINW, WINH);
+	Scene = new SceneMgr();
+
+	Scene->AddObject(new CGameObject(Vector(0,0,0), 10, Vector (1,1,1), 1)
+				, g_Renderer);
+
 
 	if (!g_Renderer->IsInitialized())
 	{
@@ -104,7 +105,8 @@ int main(int argc, char **argv)
 	glutMainLoop();
 
 	delete g_Renderer;
+	delete Scene;
 
-    return 0;
+	return 0;
 }
 

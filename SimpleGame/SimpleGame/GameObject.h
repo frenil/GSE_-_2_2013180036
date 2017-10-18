@@ -14,12 +14,13 @@ protected:
 					;
 	float speed		;
 	Vector moveto	;
-
+	OOBB oobb;
 public:
 	CGameObject();
 	CGameObject(Vector pos, float s, Vector col,float a) :position(pos),size(s),color(col),alpha(a) {			
 	speed= 0.1f ;
 	 moveto= Vector(1, 0.5f, 0) ;
+	 oobb = {-size,size,size,-size};
 	}
 	~CGameObject();
 
