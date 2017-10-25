@@ -4,6 +4,8 @@
 #include "Vector.h"
 #include <stdio.h>
 #include <tchar.h>
+#include <Windows.h>
+#include <math.h>
 #define WINW 800
 #define WINH 600
 

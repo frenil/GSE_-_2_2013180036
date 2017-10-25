@@ -18,5 +18,6 @@ public:
 	Vector operator* (float num) {
 		return Vector(x*num, y *num, z *num);
 	}
+	
 };
 

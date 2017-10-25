@@ -12,14 +12,14 @@ CGameObject::~CGameObject()
 {
 }
 
-void CGameObject::Update()
+void CGameObject::Update(float timeelapsed)
 {
-	position =position + (moveto*speed);
+	position =position + (moveto*speed*timeelapsed);
 	if (position.x >= WINW/2|| position.x <= -(WINW/2))
 		moveto.x = moveto.x*-1;
 	if (position.y >= WINH/2 || position.y <= -(WINH/2))
 		moveto.y = moveto.y*-1;
-
+	Life -= 100*timeelapsed;
 }
 
 void CGameObject::Render()

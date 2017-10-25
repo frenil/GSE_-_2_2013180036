@@ -7,12 +7,13 @@ class SceneMgr
 {
 private:
 	vector<CGameObject> obj;
+	int m_nObject;
 public:
 	SceneMgr();
 	~SceneMgr();
 
 	void Render();
-	void Update();
+	void Update(float timeelapsed);
 
 	void AddObject(CGameObject* addobj, Renderer* ren);
 	bool Colide(CGameObject a, CGameObject b);
