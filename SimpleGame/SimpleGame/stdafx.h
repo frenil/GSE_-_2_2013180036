@@ -18,3 +18,10 @@ struct OOBB {
 	float Right;
 	float Down;
 };
+
+enum {
+	CHARACTER,
+	BUILDING,
+	BULLET,
+	ARROW
+};

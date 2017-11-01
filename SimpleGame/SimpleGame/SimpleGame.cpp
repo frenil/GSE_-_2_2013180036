@@ -58,8 +58,7 @@ void MouseInput(int button, int state, int x, int y)
 	}
 	if (button == GLUT_LEFT_BUTTON&&state == GLUT_UP) {
 
-		CGameObject ob(Vector(x - (WINW / 2), (WINH / 2) - y, 0), 30, Vector(1, 1, 1), 1);
-		Scene->AddObject(&ob, g_Renderer);
+		Scene->AddObject(Vector(x - (WINW / 2), (WINH / 2) - y, 0), 10, CHARACTER, g_Renderer);
 	}
 	if (button == GLUT_RIGHT_BUTTON&&state == GLUT_DOWN) {
 	}
@@ -67,7 +66,7 @@ void MouseInput(int button, int state, int x, int y)
 		{
 		}
 	}
-			RenderScene();
+	RenderScene();
 }
 void KeyInput(unsigned char key, int x, int y)
 {
@@ -101,10 +100,7 @@ int main(int argc, char **argv)
 	// Initialize Renderer
 	g_Renderer = new Renderer(WINW, WINH);
 	Scene = new SceneMgr();
-	for (int i = 0; i < 20; ++i) {
-	Scene->AddObject(new CGameObject(Vector(-350+rand()%700, -250 + rand() % 500,0), 30, Vector (1,1,1), 1)
-				, g_Renderer);
-	}
+	Scene->AddObject(Vector(0, 0, 0), 50, BUILDING, g_Renderer);
 
 	if (!g_Renderer->IsInitialized())
 	{

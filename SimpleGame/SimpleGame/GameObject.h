@@ -14,14 +14,14 @@ protected:
 					;
 	float speed		;
 	Vector moveto	;
-
+	int type;
 	float Life;
 
 	OOBB oobb;
 public:
 	bool colided;
 	CGameObject();
-	CGameObject(Vector pos, float s, Vector col,float a) :position(pos),size(s),color(col),alpha(a) {			
+	CGameObject(Vector pos, float s, Vector col,float a,int t) :position(pos),size(s),color(col),alpha(a),type(t) {			
 	speed= 100.f ;
 	Life = 100.f;
 	 moveto= Normalize( Vector((float)(1.f/(-50+rand()%100)), (float)(1.f / (-50+rand() % 100)), 0)) ;
@@ -54,14 +54,20 @@ public:
 		result.Up =oobb.Up + position.y;
 		return result;
 	}
+	int GetType() { return type; }
 
-
+	void Damage(float damage) { Life -= damage; }
 	void SetColor(Vector col) { color = col; }
+	void SetType(int T) { type = T; }
+	void SetMove(Vector M) { moveto = M; }
+	void SetLife(float L) { Life = L; }
+	void SetSpeed(float S) { speed = S; }
 	void SetPosition(float px, float py) { position.x = px, position.y = py; }
 	void SetRenderer(Renderer* ren) { renderer = ren; }
 	void Translate(Vector v) { position = position + v; }
 	void MultipleScale(float num) { size *= num; }
 	void ChangeColor(Vector col) { color = col; }
+	
 
 	virtual void Render();
 	virtual void Update(float timeelapsed);
@@ -70,7 +76,7 @@ public:
 class VerticalObject:public CGameObject{
 
 public:
-	VerticalObject(Vector pos, float s, Vector col, float a) :CGameObject(pos, s, col, a) { 
+	VerticalObject(Vector pos, float s, Vector col, float a,int t) :CGameObject(pos, s, col, a,t) { 
 		speed = 0;
 		moveto = Vector(0, 1, 0); }
 

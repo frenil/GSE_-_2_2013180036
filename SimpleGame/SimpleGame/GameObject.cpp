@@ -19,8 +19,8 @@ void CGameObject::Update(float timeelapsed)
 		moveto.x = moveto.x*-1;
 	if (position.y >= WINH/2 || position.y <= -(WINH/2))
 		moveto.y = moveto.y*-1;
-	Life -= 100*timeelapsed;
 }
+
 
 void CGameObject::Render()
 {
