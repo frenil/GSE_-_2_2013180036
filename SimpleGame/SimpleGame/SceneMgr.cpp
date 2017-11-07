@@ -2,9 +2,11 @@
 #include "SceneMgr.h"
 
 
-SceneMgr::SceneMgr()
+SceneMgr::SceneMgr(Renderer* ren)
 {
 	m_nObject = 0;
+	m_pRendertarget = ren;
+	shoottime = 0;
 }
 
 
@@ -15,21 +17,29 @@ SceneMgr::~SceneMgr()
 void SceneMgr::Render()
 {
 	for (auto it = obj.begin(); it != obj.end(); ++it) {
-		it->Render();
+		it->Render(m_pRendertarget);
 	}
 }
 
 void SceneMgr::Update(float timeelapsed)
 {
+	shoottime += timeelapsed;
+	if (obj.begin()->GetType() == BUILDING&&shoottime > 2) {
+		shoottime = 0;
+		AddObject(obj.begin()->GetPosition(), 10, BULLET);
+	}
 	for (auto it = obj.begin(); it != obj.end(); ) {
 		it->Update(timeelapsed);
+
 		it->colided = false;
-		if (it->GetLife()<=0) {
-			auto it2 = it;
-			obj.erase(it2);
-			--it;
+		if (it->GetLife() <= 0) {
+			obj.erase(it);
+			break;
 		}
-		++it;
+		else
+		{			
+			++it;
+		}
 	}
 	for (auto it = obj.begin(); it != obj.end(); ++it) {
 		for (auto it2 = it+1; it2 != obj.end(); ++it2) {
@@ -39,6 +49,15 @@ void SceneMgr::Update(float timeelapsed)
 					it->colided = true; 
 					it2->colided = true;
 				}
+
+				if (it->GetType() == CHARACTER&&	it2->GetType() == BULLET) {
+					it->Damage(it2->GetLife());
+					it2->colided = true;
+				}
+				else if( it2->GetType() == CHARACTER&&it->GetType() == BULLET) {
+					it2->Damage(it->GetLife());
+					it->colided = true;
+				}
 			}
 		}
 	}
@@ -47,7 +66,7 @@ void SceneMgr::Update(float timeelapsed)
 			it->Damage(10);
 			printf("%f\n", it->GetLife());
 		}
-		if (it->colided&&it->GetType()==CHARACTER) {
+		if (it->colided&&(it->GetType()==CHARACTER||it->GetType() == BULLET)) {
 			auto it2 = it;
 			--it;
 			obj.erase(it2);
@@ -57,7 +76,7 @@ void SceneMgr::Update(float timeelapsed)
 	}
 }
 
-void SceneMgr::AddObject(Vector pos, float s, int type, Renderer* ren)
+void SceneMgr::AddObject(Vector pos, float s, int type)
 {
 	CGameObject addobj;
 	switch (type) {
@@ -68,13 +87,14 @@ void SceneMgr::AddObject(Vector pos, float s, int type, Renderer* ren)
 		break;
 	case BUILDING:
 		addobj= CGameObject(pos, s, Vector(1, 1, 0), 1, type);
-		addobj.SetSpeed(0);
 		addobj.SetLife(500);
+		addobj.SetSpeed(0);
 		break;
 	case BULLET:
 		addobj= CGameObject(pos, s, Vector(1, 0, 0), 1, type);
 		addobj.SetLife(20);
-		addobj.SetSpeed(300);
+		addobj.SetSpeed(600);
+		addobj.SetMove(Vector((rand() % 100)/100.f, (rand() % 100)/100.f, 0));
 		break;
 	case ARROW:
 		addobj= CGameObject(pos, s, Vector(0, 1, 0), 1, type);
@@ -82,8 +102,6 @@ void SceneMgr::AddObject(Vector pos, float s, int type, Renderer* ren)
 		addobj.SetSpeed(100);
 		break;
 	}
-	
-	addobj.SetRenderer(ren);
 
 	obj.push_back(addobj);
 	++m_nObject;

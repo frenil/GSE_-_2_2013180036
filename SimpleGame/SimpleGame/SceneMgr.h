@@ -10,14 +10,16 @@ private:
 	vector<CGameObject> obj;
 	int m_nObject;
 	float shoottime;
+	Renderer* m_pRendertarget;
+
 
 public:
-	SceneMgr();
+	SceneMgr(Renderer* ren);
 	~SceneMgr();
 
 	void Render();
 	void Update(float timeelapsed);
-	void AddObject(Vector pos, float s, int type, Renderer* ren);
+	void AddObject(Vector pos, float s, int type);
 	bool Colide(CGameObject a, CGameObject b);
 };
 

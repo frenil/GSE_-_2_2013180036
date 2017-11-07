@@ -22,8 +22,8 @@ void CGameObject::Update(float timeelapsed)
 }
 
 
-void CGameObject::Render()
+void CGameObject::Render(Renderer* ren)
 {
-	renderer->DrawSolidRect(position.x, position.y, position.z, size, color.x, color.y, color.z, alpha);
+	ren->DrawSolidRect(position.x, position.y, position.z, size, color.x, color.y, color.z, alpha);
 }
 

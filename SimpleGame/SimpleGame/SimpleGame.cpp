@@ -58,7 +58,7 @@ void MouseInput(int button, int state, int x, int y)
 	}
 	if (button == GLUT_LEFT_BUTTON&&state == GLUT_UP) {
 
-		Scene->AddObject(Vector(x - (WINW / 2), (WINH / 2) - y, 0), 10, CHARACTER, g_Renderer);
+		Scene->AddObject(Vector(x - (WINW / 2), (WINH / 2) - y, 0), 20, CHARACTER);
 	}
 	if (button == GLUT_RIGHT_BUTTON&&state == GLUT_DOWN) {
 	}
@@ -99,8 +99,8 @@ int main(int argc, char **argv)
 
 	// Initialize Renderer
 	g_Renderer = new Renderer(WINW, WINH);
-	Scene = new SceneMgr();
-	Scene->AddObject(Vector(0, 0, 0), 50, BUILDING, g_Renderer);
+	Scene = new SceneMgr(g_Renderer);
+	Scene->AddObject(Vector(0, 0, 0), 50, BUILDING);
 
 	if (!g_Renderer->IsInitialized())
 	{

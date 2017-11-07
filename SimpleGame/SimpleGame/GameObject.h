@@ -6,7 +6,6 @@
 class CGameObject
 {
 protected:
-	Renderer* renderer = nullptr;
 	Vector position	;
 	float size		;
 	Vector color	;
@@ -63,13 +62,12 @@ public:
 	void SetLife(float L) { Life = L; }
 	void SetSpeed(float S) { speed = S; }
 	void SetPosition(float px, float py) { position.x = px, position.y = py; }
-	void SetRenderer(Renderer* ren) { renderer = ren; }
 	void Translate(Vector v) { position = position + v; }
 	void MultipleScale(float num) { size *= num; }
 	void ChangeColor(Vector col) { color = col; }
 	
 
-	virtual void Render();
+	virtual void Render(Renderer* ren);
 	virtual void Update(float timeelapsed);
 };
 
