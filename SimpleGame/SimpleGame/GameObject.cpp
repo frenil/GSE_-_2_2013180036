@@ -24,6 +24,9 @@ void CGameObject::Update(float timeelapsed)
 
 void CGameObject::Render(Renderer* ren)
 {
-	ren->DrawSolidRect(position.x, position.y, position.z, size, color.x, color.y, color.z, alpha);
+	if (m_Texture)
+		ren->DrawTexturedRect(position.x, position.y, position.z, size, color.x, color.y, color.z, alpha, m_Texture);
+	else
+		ren->DrawSolidRect(position.x, position.y, position.z, size, color.x, color.y, color.z, alpha);
 }
 

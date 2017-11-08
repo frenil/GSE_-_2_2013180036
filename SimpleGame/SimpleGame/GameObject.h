@@ -16,6 +16,8 @@ protected:
 	int type;
 	float Life;
 
+	CGameObject		*m_pParent;
+	GLuint m_Texture = NULL;
 	OOBB oobb;
 public:
 	bool colided;
@@ -44,6 +46,7 @@ public:
 	float GetSpeed() { return speed; }
 	Vector GetMove() { return moveto; }
 	float GetLife() { return Life; }
+	CGameObject* GetParent() { return m_pParent; }
 
 	OOBB GetOOBB() { 
 		OOBB result;
@@ -56,12 +59,15 @@ public:
 	int GetType() { return type; }
 
 	void Damage(float damage) { Life -= damage; }
+	void SetParent(CGameObject* p) { m_pParent = p; }
 	void SetColor(Vector col) { color = col; }
 	void SetType(int T) { type = T; }
 	void SetMove(Vector M) { moveto = M; }
 	void SetLife(float L) { Life = L; }
 	void SetSpeed(float S) { speed = S; }
 	void SetPosition(float px, float py) { position.x = px, position.y = py; }
+	void SetTexture(GLuint tex) { m_Texture = tex; }
+
 	void Translate(Vector v) { position = position + v; }
 	void MultipleScale(float num) { size *= num; }
 	void ChangeColor(Vector col) { color = col; }
@@ -69,13 +75,4 @@ public:
 
 	virtual void Render(Renderer* ren);
 	virtual void Update(float timeelapsed);
-};
-
-class VerticalObject:public CGameObject{
-
-public:
-	VerticalObject(Vector pos, float s, Vector col, float a,int t) :CGameObject(pos, s, col, a,t) { 
-		speed = 0;
-		moveto = Vector(0, 1, 0); }
-
 };

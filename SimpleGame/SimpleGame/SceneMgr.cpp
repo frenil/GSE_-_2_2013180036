@@ -7,6 +7,7 @@ SceneMgr::SceneMgr(Renderer* ren)
 	m_nObject = 0;
 	m_pRendertarget = ren;
 	shoottime = 0;
+	m_BuildingTex = ren->CreatePngTexture("./resource/Buckler.png");
 }
 
 
@@ -24,9 +25,14 @@ void SceneMgr::Render()
 void SceneMgr::Update(float timeelapsed)
 {
 	shoottime += timeelapsed;
-	if (obj.begin()->GetType() == BUILDING&&shoottime > 2) {
+	if (shoottime > 2) {
+		for (int i = 0; i < obj.size(); ++i) {
+			if (obj[i].GetType() == BUILDING)
+				AddObject(obj[i].GetPosition(), 10, BULLET);
+			else if (obj[i].GetType() == CHARACTER)
+				AddObject(obj[i].GetPosition(), 10, ARROW).SetParent(&obj[i]);
+		}
 		shoottime = 0;
-		AddObject(obj.begin()->GetPosition(), 10, BULLET);
 	}
 	for (auto it = obj.begin(); it != obj.end(); ) {
 		it->Update(timeelapsed);
@@ -37,26 +43,51 @@ void SceneMgr::Update(float timeelapsed)
 			break;
 		}
 		else
-		{			
 			++it;
-		}
 	}
 	for (auto it = obj.begin(); it != obj.end(); ++it) {
 		for (auto it2 = it+1; it2 != obj.end(); ++it2) {
-			if (Colide(*it, *it2)) {
-				if (it->GetType() == CHARACTER&&it2->GetType() == BUILDING
-					|| it2->GetType() == CHARACTER&&it->GetType() == BUILDING) {
-					it->colided = true; 
-					it2->colided = true;
-				}
+			if (it != it2) {
+				if (Colide(*it, *it2)) {
+					if (it->GetType() == BUILDING) {
+						if (it2->GetType() == CHARACTER)
+						{
+							it->colided = true;
+							it2->colided = true;
+						}
+						else if (it2->GetType() == ARROW) {
+							it->Damage(it2->GetLife());
+							it2->colided = true;
+						}
+					}
 
-				if (it->GetType() == CHARACTER&&	it2->GetType() == BULLET) {
-					it->Damage(it2->GetLife());
-					it2->colided = true;
-				}
-				else if( it2->GetType() == CHARACTER&&it->GetType() == BULLET) {
-					it2->Damage(it->GetLife());
-					it->colided = true;
+					else if (it->GetType() == CHARACTER) {
+						if (it2->GetType() == BUILDING)
+						{
+							it->colided = true;
+							it2->colided = true;
+						}
+						
+						else if (it2->GetType() == ARROW|| it2->GetType() == BULLET) {
+							it->Damage(it2->GetLife());
+							it2->colided = true;
+						}
+					}	
+
+					else if (it->GetType() == ARROW) {
+						if (it2->GetType() == BUILDING || it2->GetType() == CHARACTER)
+						{
+							it2->Damage(it->GetLife());
+							it->colided = true;
+						}
+					}
+					else if (it->GetType() == BULLET) {
+						if (it2->GetType() == CHARACTER)
+						{
+							it2->Damage(it->GetLife());
+							it->colided = true;
+						}
+					}
 				}
 			}
 		}
@@ -66,7 +97,7 @@ void SceneMgr::Update(float timeelapsed)
 			it->Damage(10);
 			printf("%f\n", it->GetLife());
 		}
-		if (it->colided&&(it->GetType()==CHARACTER||it->GetType() == BULLET)) {
+		if (it->colided && (it->GetType() == CHARACTER || it->GetType() == BULLET || it->GetType() == ARROW)) {
 			auto it2 = it;
 			--it;
 			obj.erase(it2);
@@ -76,43 +107,47 @@ void SceneMgr::Update(float timeelapsed)
 	}
 }
 
-void SceneMgr::AddObject(Vector pos, float s, int type)
+CGameObject SceneMgr::AddObject(Vector pos, float s, int type)
 {
 	CGameObject addobj;
 	switch (type) {
 	case CHARACTER:
-		addobj= CGameObject(pos, s, Vector(1, 1, 1), 1,type);
+		addobj = CGameObject(pos, s, Vector(1, 1, 1), 1, type);
 		addobj.SetLife(10);
 		addobj.SetSpeed(100);
 		break;
 	case BUILDING:
-		addobj= CGameObject(pos, s, Vector(1, 1, 0), 1, type);
+		addobj = CGameObject(pos, s, Vector(1, 1, 0), 1, type);
 		addobj.SetLife(500);
 		addobj.SetSpeed(0);
+		addobj.SetTexture(m_BuildingTex);
 		break;
 	case BULLET:
-		addobj= CGameObject(pos, s, Vector(1, 0, 0), 1, type);
+		addobj = CGameObject(pos, s, Vector(1, 0, 0), 1, type);
 		addobj.SetLife(20);
 		addobj.SetSpeed(600);
-		addobj.SetMove(Vector((rand() % 100)/100.f, (rand() % 100)/100.f, 0));
+		addobj.SetMove(Vector((float)(rand() % (100))-50, (float)(rand() % (100)) - 50, 0).Normalize());
 		break;
 	case ARROW:
-		addobj= CGameObject(pos, s, Vector(0, 1, 0), 1, type);
+		addobj = CGameObject(pos, s, Vector(0, 1, 0), 1, type);
 		addobj.SetLife(10);
+		addobj.SetMove(Vector((float)(rand() % (100)) - 50, (float)(rand() % (100)) - 50, 0).Normalize());
 		addobj.SetSpeed(100);
+		addobj.SetPosition(addobj.GetPosition().x + addobj.GetMove().x * 50, addobj.GetPosition().y + addobj.GetMove().x * 50);
 		break;
 	}
 
 	obj.push_back(addobj);
 	++m_nObject;
+	return addobj;
 }
 
 bool SceneMgr::Colide(CGameObject a, CGameObject b)
 {
-	if (a.GetOOBB().Left>b.GetOOBB().Right)	return false;
-	if (a.GetOOBB().Right<b.GetOOBB().Left)	return false;
-	if (a.GetOOBB().Up<b.GetOOBB().Down)	return false;
-	if (a.GetOOBB().Down>b.GetOOBB().Up)	return false;
+	if (a.GetOOBB().Left > b.GetOOBB().Right)	return false;
+	if (a.GetOOBB().Right < b.GetOOBB().Left)	return false;
+	if (a.GetOOBB().Up < b.GetOOBB().Down)	return false;
+	if (a.GetOOBB().Down > b.GetOOBB().Up)	return false;
 
 	return true;
 }
