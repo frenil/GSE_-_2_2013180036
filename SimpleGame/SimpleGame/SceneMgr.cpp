@@ -7,6 +7,7 @@ SceneMgr::SceneMgr(Renderer* ren)
 	m_nObject = 0;
 	m_pRendertarget = ren;
 	shoottime = 0;
+	m_nIndex = 0;
 	m_BuildingTex = ren->CreatePngTexture("./resource/Buckler.png");
 }
 
@@ -30,7 +31,7 @@ void SceneMgr::Update(float timeelapsed)
 			if (obj[i].GetType() == BUILDING)
 				AddObject(obj[i].GetPosition(), 10, BULLET);
 			else if (obj[i].GetType() == CHARACTER)
-				AddObject(obj[i].GetPosition(), 10, ARROW).SetParent(&obj[i]);
+				AddObject(obj[i].GetPosition(), 10, ARROW, obj[i].GetIndex());
 		}
 		shoottime = 0;
 	}
@@ -68,13 +69,13 @@ void SceneMgr::Update(float timeelapsed)
 							it2->colided = true;
 						}
 						
-						else if (it2->GetType() == ARROW|| it2->GetType() == BULLET) {
+						else if ((it2->GetType() == ARROW&& it2->GetParent() != it->GetIndex())|| it2->GetType() == BULLET) {
 							it->Damage(it2->GetLife());
 							it2->colided = true;
 						}
 					}	
 
-					else if (it->GetType() == ARROW) {
+					else if (it->GetType() == ARROW&& it->GetParent()!=it2->GetIndex()) {
 						if (it2->GetType() == BUILDING || it2->GetType() == CHARACTER)
 						{
 							it2->Damage(it->GetLife());
@@ -107,7 +108,7 @@ void SceneMgr::Update(float timeelapsed)
 	}
 }
 
-CGameObject SceneMgr::AddObject(Vector pos, float s, int type)
+CGameObject SceneMgr::AddObject(Vector pos, float s, int type,int p)
 {
 	CGameObject addobj;
 	switch (type) {
@@ -133,10 +134,10 @@ CGameObject SceneMgr::AddObject(Vector pos, float s, int type)
 		addobj.SetLife(10);
 		addobj.SetMove(Vector((float)(rand() % (100)) - 50, (float)(rand() % (100)) - 50, 0).Normalize());
 		addobj.SetSpeed(100);
-		addobj.SetPosition(addobj.GetPosition().x + addobj.GetMove().x * 50, addobj.GetPosition().y + addobj.GetMove().x * 50);
 		break;
 	}
-
+	addobj.SetParent(p);
+	addobj.SetIndex(m_nIndex++);
 	obj.push_back(addobj);
 	++m_nObject;
 	return addobj;

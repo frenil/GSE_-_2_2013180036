@@ -12,6 +12,7 @@ private:
 	float shoottime;
 	Renderer* m_pRendertarget;
 	GLuint m_BuildingTex;
+	int m_nIndex;
 
 public:
 	SceneMgr(Renderer* ren);
@@ -19,7 +20,7 @@ public:
 
 	void Render();
 	void Update(float timeelapsed);
-	CGameObject AddObject(Vector pos, float s, int type);
+	CGameObject AddObject(Vector pos, float s, int type, int p = -1);
 	bool Colide(CGameObject a, CGameObject b);
 };
 

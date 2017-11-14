@@ -16,7 +16,9 @@ protected:
 	int type;
 	float Life;
 
-	CGameObject		*m_pParent;
+
+	int m_index;
+	int m_pParent;
 	GLuint m_Texture = NULL;
 	OOBB oobb;
 public:
@@ -25,6 +27,8 @@ public:
 	CGameObject(Vector pos, float s, Vector col,float a,int t) :position(pos),size(s),color(col),alpha(a),type(t) {			
 	speed= 100.f ;
 	Life = 100.f;
+	m_index = m_pParent = -1;
+
 	 moveto= Normalize( Vector((float)(1.f/(-50+rand()%100)), (float)(1.f / (-50+rand() % 100)), 0)) ;
 	 oobb = {-size/2,size/2,size/2,-size/2};
 	}
@@ -44,9 +48,10 @@ public:
 	Vector GetColor() { return color; }
 	float Getalpha() { return alpha; }
 	float GetSpeed() { return speed; }
+	int GetIndex() { return m_index; }
 	Vector GetMove() { return moveto; }
 	float GetLife() { return Life; }
-	CGameObject* GetParent() { return m_pParent; }
+	int GetParent() { return m_pParent; }
 
 	OOBB GetOOBB() { 
 		OOBB result;
@@ -59,7 +64,8 @@ public:
 	int GetType() { return type; }
 
 	void Damage(float damage) { Life -= damage; }
-	void SetParent(CGameObject* p) { m_pParent = p; }
+	void SetParent(int p) { m_pParent = p; }
+	void SetIndex(int p) { m_index = p; }
 	void SetColor(Vector col) { color = col; }
 	void SetType(int T) { type = T; }
 	void SetMove(Vector M) { moveto = M; }
