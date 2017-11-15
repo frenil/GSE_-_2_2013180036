@@ -37,8 +37,11 @@ void SceneMgr::Update(float timeelapsed)
 		Vector pos = Vector(rand() % 250, rand() % 250, 0);
 		AddObject(pos, CHARACTER, 1);
 		for (int i = 0; i < obj.size(); ++i) {
-			if (obj[i].GetType() == CHARACTER)
-				AddObject(obj[i].GetPosition(), ARROW, obj[i].GetTeam(), obj[i].GetIndex());
+			if (obj[i].GetType() == BUILDING) {
+				AddObject(obj[i].GetPosition(), BULLET, obj[i].GetTeam());
+			}
+			else if (obj[i].GetType() == CHARACTER)
+				AddObject(obj[i].GetPosition(), ARROW, obj[i].GetTeam());
 		}
 		shoottime -= 1;
 	}
@@ -119,7 +122,7 @@ CGameObject SceneMgr::AddObject(Vector pos, int type, int tnum, int p)
 	case CHARACTER:
 		if (tnum == 1) color = Vector(1, 0, 0);
 		else if (tnum == 2) color = Vector(0, 0, 1);
-		addobj = CGameObject(pos, 10, color, 1, type);
+		addobj = CGameObject(pos, 20, color, 1, type);
 		addobj.SetLife(10);
 		addobj.SetSpeed(300);
 		break;
