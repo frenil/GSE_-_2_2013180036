@@ -14,6 +14,7 @@ CGameObject::~CGameObject()
 
 void CGameObject::Update(float timeelapsed)
 {
+	timer += timeelapsed;
 	position =position + (moveto*speed*timeelapsed);
 	if (position.x >= WINW/2|| position.x <= -(WINW/2))
 		moveto.x = moveto.x*-1;

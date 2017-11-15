@@ -17,7 +17,7 @@ protected:
 	Vector moveto	;
 	int type;
 	float Life;
-
+	float timer;
 
 	int m_index;
 	int m_pParent;
@@ -33,6 +33,7 @@ public:
 
 	 moveto= Normalize( Vector((float)(1.f/(-50+rand()%100)), (float)(1.f / (-50+rand() % 100)), 0)) ;
 	 oobb = {-size/2,size/2,size/2,-size/2};
+	 timer = 0;
 	}
 	~CGameObject();
 
@@ -45,6 +46,7 @@ public:
 		v.z = v.z / L;
 		return v;
 	}
+	float GetTimer() { return timer; }
 	Vector GetPosition() { return position; }
 	float GetSize() { return size; }
 	Vector GetColor() { return color; }
@@ -75,7 +77,9 @@ public:
 	void SetSpeed(float S) { speed = S; }
 	void SetPosition(float px, float py) { position.x = px, position.y = py; }
 	void SetTeam(int tnum) { teamNum = tnum; }
-	
+	void ResetTimer(float num) { timer -= num; }
+
+
 	void SetTexture(GLuint tex) { m_Texture = tex; }
 
 	void Translate(Vector v) { position = position + v; }

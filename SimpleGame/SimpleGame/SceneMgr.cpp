@@ -35,15 +35,18 @@ void SceneMgr::Update(float timeelapsed)
 	settime += timeelapsed;
 	if (shoottime > 1) {
 		Vector pos = Vector(rand() % 250, rand() % 250, 0);
-		AddObject(pos, CHARACTER, 1);
-		for (int i = 0; i < obj.size(); ++i) {
-			if (obj[i].GetType() == BUILDING) {
-				AddObject(obj[i].GetPosition(), BULLET, obj[i].GetTeam());
-			}
-			else if (obj[i].GetType() == CHARACTER)
-				AddObject(obj[i].GetPosition(), ARROW, obj[i].GetTeam());
-		}
+		AddObject(pos, CHARACTER, 1);		
 		shoottime -= 1;
+	}
+	for (int i = 0; i < obj.size(); ++i) {
+		if (obj[i].GetType() == BUILDING&&obj[i].GetTimer()>=1) {
+			AddObject(obj[i].GetPosition(), BULLET, obj[i].GetTeam());
+			obj[i].ResetTimer(1.0f);
+		}
+		else if (obj[i].GetType() == CHARACTER&&obj[i].GetTimer() >= 1) {
+			obj[i].ResetTimer(1.0f);
+			AddObject(obj[i].GetPosition(), ARROW, obj[i].GetTeam());
+		}
 	}
 	for (auto it = obj.begin(); it != obj.end(); ) {
 		it->Update(timeelapsed);
