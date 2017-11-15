@@ -7,8 +7,14 @@ SceneMgr::SceneMgr(Renderer* ren)
 	m_nObject = 0;
 	m_pRendertarget = ren;
 	shoottime = 0;
+	settime = 2;
 	m_nIndex = 0;
-	m_BuildingTex = ren->CreatePngTexture("./resource/Buckler.png");
+	m_BuildingTex[0] = ren->CreatePngTexture("./resource/Buckler.png");
+	m_BuildingTex[1] = ren->CreatePngTexture("./resource/Kite Shield.png");
+	for (int i = 0; i < 10; ++i) {
+		Vector pos = Vector(-225+(i*50), 0, 0);
+		AddObject(pos, WALL, -1);
+	}
 }
 
 
@@ -26,14 +32,15 @@ void SceneMgr::Render()
 void SceneMgr::Update(float timeelapsed)
 {
 	shoottime += timeelapsed;
-	if (shoottime > 2) {
+	settime += timeelapsed;
+	if (shoottime > 1) {
+		Vector pos = Vector(rand() % 250, rand() % 250, 0);
+		AddObject(pos, CHARACTER, 1);
 		for (int i = 0; i < obj.size(); ++i) {
-			if (obj[i].GetType() == BUILDING)
-				AddObject(obj[i].GetPosition(), 10, BULLET);
-			else if (obj[i].GetType() == CHARACTER)
-				AddObject(obj[i].GetPosition(), 10, ARROW, obj[i].GetIndex());
+			if (obj[i].GetType() == CHARACTER)
+				AddObject(obj[i].GetPosition(), ARROW, obj[i].GetTeam(), obj[i].GetIndex());
 		}
-		shoottime = 0;
+		shoottime -= 1;
 	}
 	for (auto it = obj.begin(); it != obj.end(); ) {
 		it->Update(timeelapsed);
@@ -49,14 +56,14 @@ void SceneMgr::Update(float timeelapsed)
 	for (auto it = obj.begin(); it != obj.end(); ++it) {
 		for (auto it2 = it+1; it2 != obj.end(); ++it2) {
 			if (it != it2) {
-				if (Colide(*it, *it2)) {
+				if (Colide(*it, *it2) && it2->GetTeam() != it->GetTeam()) {
 					if (it->GetType() == BUILDING) {
 						if (it2->GetType() == CHARACTER)
 						{
 							it->colided = true;
 							it2->colided = true;
 						}
-						else if (it2->GetType() == ARROW) {
+						else if (it2->GetType() == ARROW || it2->GetType() == BULLET) {
 							it->Damage(it2->GetLife());
 							it2->colided = true;
 						}
@@ -94,10 +101,6 @@ void SceneMgr::Update(float timeelapsed)
 		}
 	}
 	for (auto it = obj.begin(); it != obj.end(); ) {
-		if (it->colided&&it->GetType() == BUILDING) {
-			it->Damage(10);
-			printf("%f\n", it->GetLife());
-		}
 		if (it->colided && (it->GetType() == CHARACTER || it->GetType() == BULLET || it->GetType() == ARROW)) {
 			auto it2 = it;
 			--it;
@@ -108,35 +111,54 @@ void SceneMgr::Update(float timeelapsed)
 	}
 }
 
-CGameObject SceneMgr::AddObject(Vector pos, float s, int type,int p)
+CGameObject SceneMgr::AddObject(Vector pos, int type, int tnum, int p)
 {
 	CGameObject addobj;
+	Vector color;
 	switch (type) {
 	case CHARACTER:
-		addobj = CGameObject(pos, s, Vector(1, 1, 1), 1, type);
+		if (tnum == 1) color = Vector(1, 0, 0);
+		else if (tnum == 2) color = Vector(0, 0, 1);
+		addobj = CGameObject(pos, 10, color, 1, type);
 		addobj.SetLife(10);
-		addobj.SetSpeed(100);
+		addobj.SetSpeed(300);
 		break;
 	case BUILDING:
-		addobj = CGameObject(pos, s, Vector(1, 1, 0), 1, type);
+
+		color = Vector(1, 1, 1);
+		addobj = CGameObject(pos, 100, color, 1, type);
 		addobj.SetLife(500);
 		addobj.SetSpeed(0);
-		addobj.SetTexture(m_BuildingTex);
+
+		if (tnum == 1) addobj.SetTexture(m_BuildingTex[0]);
+		else if (tnum == 2) addobj.SetTexture(m_BuildingTex[1]);
+		
 		break;
 	case BULLET:
-		addobj = CGameObject(pos, s, Vector(1, 0, 0), 1, type);
+		if (tnum == 1) color = Vector(1, 0, 0);
+		else if (tnum == 2) color = Vector(0, 0, 1);
+		addobj = CGameObject(pos,10, color, 1, type);
 		addobj.SetLife(20);
 		addobj.SetSpeed(600);
 		addobj.SetMove(Vector((float)(rand() % (100))-50, (float)(rand() % (100)) - 50, 0).Normalize());
 		break;
 	case ARROW:
-		addobj = CGameObject(pos, s, Vector(0, 1, 0), 1, type);
+		if (tnum == 1) color = Vector(0.5f, 0.2f, 0.7f);
+		else if (tnum == 2) color = Vector(1, 1, 0);
+		addobj = CGameObject(pos, 10, color, 1, type);
 		addobj.SetLife(10);
 		addobj.SetMove(Vector((float)(rand() % (100)) - 50, (float)(rand() % (100)) - 50, 0).Normalize());
 		addobj.SetSpeed(100);
 		break;
+	case WALL:
+		color = Vector(1, 1, 1);
+		addobj = CGameObject(pos, 5, color, 1, type);
+		addobj.SetLife(10);
+		addobj.SetMove(Vector(0,0,0));
+		addobj.SetSpeed(0);
 	}
 	addobj.SetParent(p);
+	addobj.SetTeam(tnum);
 	addobj.SetIndex(m_nIndex++);
 	obj.push_back(addobj);
 	++m_nObject;
@@ -151,4 +173,12 @@ bool SceneMgr::Colide(CGameObject a, CGameObject b)
 	if (a.GetOOBB().Down > b.GetOOBB().Up)	return false;
 
 	return true;
+}
+
+void SceneMgr::SetPlayerCharacter(Vector pos)
+{
+	if (settime >= 2&&pos.y<=0) {
+		AddObject(pos, CHARACTER, 2);
+		settime = 0;
+	}
 }

@@ -58,13 +58,14 @@ void MouseInput(int button, int state, int x, int y)
 	}
 	if (button == GLUT_LEFT_BUTTON&&state == GLUT_UP) {
 
-		Scene->AddObject(Vector(x - (WINW / 2), (WINH / 2) - y, 0), 20, CHARACTER);
+		Scene->SetPlayerCharacter(Vector(x - (WINW / 2), (WINH / 2) - y, 0));
+
 	}
 	if (button == GLUT_RIGHT_BUTTON&&state == GLUT_DOWN) {
 	}
 	if (button == GLUT_RIGHT_BUTTON&&state == GLUT_UP) {
-		{
-		}
+	{
+	}
 	}
 	RenderScene();
 }
@@ -98,9 +99,17 @@ int main(int argc, char **argv)
 	}
 
 	// Initialize Renderer
+
 	g_Renderer = new Renderer(WINW, WINH);
 	Scene = new SceneMgr(g_Renderer);
-	Scene->AddObject(Vector(0, 0, 0), 50, BUILDING);
+	Scene->AddObject(Vector(0, 350, 0)    , BUILDING, 1);
+	Scene->AddObject(Vector(-200, 350, 0), BUILDING, 1);
+	Scene->AddObject(Vector(200, 350, 0), BUILDING, 1);
+
+	Scene->AddObject(Vector(0,	  -350, 0),     BUILDING, 2 );
+	Scene->AddObject(Vector(-200, -350, 0), BUILDING, 2 );
+	Scene->AddObject(Vector(200,  -350, 0), BUILDING, 2 );
+
 
 	if (!g_Renderer->IsInitialized())
 	{

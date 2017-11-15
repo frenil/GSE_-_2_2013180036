@@ -6,6 +6,8 @@
 class CGameObject
 {
 protected:
+	int teamNum;
+
 	Vector position	;
 	float size		;
 	Vector color	;
@@ -52,7 +54,7 @@ public:
 	Vector GetMove() { return moveto; }
 	float GetLife() { return Life; }
 	int GetParent() { return m_pParent; }
-
+	int GetTeam() { return teamNum; }
 	OOBB GetOOBB() { 
 		OOBB result;
 		result.Right =oobb.Right + position.x;
@@ -72,6 +74,8 @@ public:
 	void SetLife(float L) { Life = L; }
 	void SetSpeed(float S) { speed = S; }
 	void SetPosition(float px, float py) { position.x = px, position.y = py; }
+	void SetTeam(int tnum) { teamNum = tnum; }
+	
 	void SetTexture(GLuint tex) { m_Texture = tex; }
 
 	void Translate(Vector v) { position = position + v; }

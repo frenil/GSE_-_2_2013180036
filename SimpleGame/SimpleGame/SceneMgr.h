@@ -10,8 +10,9 @@ private:
 	vector<CGameObject> obj;
 	int m_nObject;
 	float shoottime;
+	float settime;
 	Renderer* m_pRendertarget;
-	GLuint m_BuildingTex;
+	GLuint m_BuildingTex[2];
 	int m_nIndex;
 
 public:
@@ -20,7 +21,9 @@ public:
 
 	void Render();
 	void Update(float timeelapsed);
-	CGameObject AddObject(Vector pos, float s, int type, int p = -1);
+	CGameObject AddObject(Vector pos, int type, int tnum, int p = -1);
 	bool Colide(CGameObject a, CGameObject b);
+
+	void SetPlayerCharacter(Vector pos);
 };
 

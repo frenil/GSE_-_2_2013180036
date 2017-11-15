@@ -6,8 +6,8 @@
 #include <tchar.h>
 #include <Windows.h>
 #include <math.h>
-#define WINW 800
-#define WINH 600
+#define WINW 500
+#define WINH 800
 
 using namespace std;
 
@@ -23,5 +23,6 @@ enum {
 	CHARACTER,
 	BUILDING,
 	BULLET,
-	ARROW
+	ARROW,
+	WALL
 };
