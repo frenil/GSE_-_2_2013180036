@@ -1,17 +1,10 @@
-﻿  stdafx.cpp
-  GameObject.cpp
-  Mesh.cpp
-  Renderer.cpp
-Renderer.cpp(63): warning C4267: '=': 'size_t'에서 'GLint'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-  SceneMgr.cpp
-  SimpleGame.cpp
-SimpleGame.cpp(61): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-SimpleGame.cpp(62): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-  Vector.cpp
+﻿  SceneMgr.cpp
+SceneMgr.cpp(17): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+SceneMgr.cpp(40): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
   코드를 생성하고 있습니다.
-  79 of 303 functions (26.1%) were compiled, the rest were copied from previous compilation.
-    21 functions were new in current compilation
-    27 functions had inline decision re-evaluated but remain unchanged
+  15 of 528 functions ( 2.8%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    3 functions had inline decision re-evaluated but remain unchanged
   코드를 생성했습니다.
   SimpleGame.vcxproj -> C:\Users\Hwihyun\Desktop\17년도 2학기\겜소공\GSE_-_2_2013180036\SimpleGame\x64\Release\SimpleGame.exe
   SimpleGame.vcxproj -> C:\Users\Hwihyun\Desktop\17년도 2학기\겜소공\GSE_-_2_2013180036\SimpleGame\x64\Release\SimpleGame.pdb (Full PDB)

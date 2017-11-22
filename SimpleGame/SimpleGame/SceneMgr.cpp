@@ -4,6 +4,8 @@
 
 SceneMgr::SceneMgr(Renderer* ren)
 {
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClearDepth(1.f);
 	m_nObject = 0;
 	m_pRendertarget = ren;
 	shoottime = 0;
@@ -33,6 +35,7 @@ void SceneMgr::Update(float timeelapsed)
 {
 	shoottime += timeelapsed;
 	settime += timeelapsed;
+	////////////////////////////자동 생성
 	if (shoottime > 1) {
 		Vector pos = Vector(rand() % 250, rand() % 250, 0);
 		AddObject(pos, CHARACTER, 1);		
@@ -48,17 +51,32 @@ void SceneMgr::Update(float timeelapsed)
 			AddObject(obj[i].GetPosition(), ARROW, obj[i].GetTeam());
 		}
 	}
+
+	////////////////////////////////업데이트
 	for (auto it = obj.begin(); it != obj.end(); ) {
 		it->Update(timeelapsed);
 
 		it->colided = false;
-		if (it->GetLife() <= 0) {
+		if (it->GetType() == ARROW || it->GetType() == BULLET) {
+
+			if (it->GetPosition().x >= WINW / 2 || it->GetPosition().x <= -(WINW / 2)
+				|| it->GetPosition().y >= WINH / 2 || it->GetPosition().y <= -(WINH / 2))
+			{
+				obj.erase(it);
+				break;
+			}
+			else
+				++it;
+		}
+		else if (it->GetLife() <= 0) {
 			obj.erase(it);
 			break;
 		}
 		else
 			++it;
 	}
+
+	//////////////////////////////////////충돌
 	for (auto it = obj.begin(); it != obj.end(); ++it) {
 		for (auto it2 = it+1; it2 != obj.end(); ++it2) {
 			if (it != it2) {
@@ -66,6 +84,7 @@ void SceneMgr::Update(float timeelapsed)
 					if (it->GetType() == BUILDING) {
 						if (it2->GetType() == CHARACTER)
 						{
+							it->Damage(it2->GetLife());
 							it->colided = true;
 							it2->colided = true;
 						}
@@ -78,17 +97,18 @@ void SceneMgr::Update(float timeelapsed)
 					else if (it->GetType() == CHARACTER) {
 						if (it2->GetType() == BUILDING)
 						{
+							it2->Damage(it->GetLife());
 							it->colided = true;
 							it2->colided = true;
 						}
 						
-						else if ((it2->GetType() == ARROW&& it2->GetParent() != it->GetIndex())|| it2->GetType() == BULLET) {
+						else if ((it2->GetType() == ARROW)|| it2->GetType() == BULLET) {
 							it->Damage(it2->GetLife());
 							it2->colided = true;
 						}
 					}	
 
-					else if (it->GetType() == ARROW&& it->GetParent()!=it2->GetIndex()) {
+					else if (it->GetType() == ARROW) {
 						if (it2->GetType() == BUILDING || it2->GetType() == CHARACTER)
 						{
 							it2->Damage(it->GetLife());
@@ -125,15 +145,15 @@ CGameObject SceneMgr::AddObject(Vector pos, int type, int tnum, int p)
 	case CHARACTER:
 		if (tnum == 1) color = Vector(1, 0, 0);
 		else if (tnum == 2) color = Vector(0, 0, 1);
-		addobj = CGameObject(pos, 20, color, 1, type);
-		addobj.SetLife(10);
+		addobj = CGameObject(pos, 20, color, 1, type,0.5f);
+		addobj.SetMaxLife(15);
 		addobj.SetSpeed(300);
 		break;
 	case BUILDING:
 
 		color = Vector(1, 1, 1);
-		addobj = CGameObject(pos, 100, color, 1, type);
-		addobj.SetLife(500);
+		addobj = CGameObject(pos, 100, color, 1, type,0.4f);
+		addobj.SetMaxLife(500);
 		addobj.SetSpeed(0);
 
 		if (tnum == 1) addobj.SetTexture(m_BuildingTex[0]);
@@ -143,29 +163,27 @@ CGameObject SceneMgr::AddObject(Vector pos, int type, int tnum, int p)
 	case BULLET:
 		if (tnum == 1) color = Vector(1, 0, 0);
 		else if (tnum == 2) color = Vector(0, 0, 1);
-		addobj = CGameObject(pos,10, color, 1, type);
-		addobj.SetLife(20);
+		addobj = CGameObject(pos,10, color, 1, type,0.1f);
+		addobj.SetMaxLife(20);
 		addobj.SetSpeed(600);
 		addobj.SetMove(Vector((float)(rand() % (100))-50, (float)(rand() % (100)) - 50, 0).Normalize());
 		break;
 	case ARROW:
 		if (tnum == 1) color = Vector(0.5f, 0.2f, 0.7f);
 		else if (tnum == 2) color = Vector(1, 1, 0);
-		addobj = CGameObject(pos, 10, color, 1, type);
-		addobj.SetLife(10);
+		addobj = CGameObject(pos, 10, color, 1, type,0.1f);
+		addobj.SetMaxLife(10);
 		addobj.SetMove(Vector((float)(rand() % (100)) - 50, (float)(rand() % (100)) - 50, 0).Normalize());
 		addobj.SetSpeed(100);
 		break;
 	case WALL:
 		color = Vector(1, 1, 1);
-		addobj = CGameObject(pos, 5, color, 1, type);
-		addobj.SetLife(10);
+		addobj = CGameObject(pos, 5, color, 1, type,0);
+		addobj.SetMaxLife(10);
 		addobj.SetMove(Vector(0,0,0));
 		addobj.SetSpeed(0);
 	}
-	addobj.SetParent(p);
 	addobj.SetTeam(tnum);
-	addobj.SetIndex(m_nIndex++);
 	obj.push_back(addobj);
 	++m_nObject;
 	return addobj;

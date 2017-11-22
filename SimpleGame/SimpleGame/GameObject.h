@@ -17,19 +17,18 @@ protected:
 	Vector moveto	;
 	int type;
 	float Life;
+	float MaxLife;
 	float timer;
-
-	int m_index;
-	int m_pParent;
+	float Dlevel;
 	GLuint m_Texture = NULL;
 	OOBB oobb;
 public:
 	bool colided;
 	CGameObject();
-	CGameObject(Vector pos, float s, Vector col,float a,int t) :position(pos),size(s),color(col),alpha(a),type(t) {			
+	CGameObject(Vector pos, float s, Vector col,float a,int t,float level) :position(pos),size(s),color(col),alpha(a),type(t),Dlevel(level) {			
 	speed= 100.f ;
-	Life = 100.f;
-	m_index = m_pParent = -1;
+	MaxLife = 100.f;
+	Life = MaxLife;
 
 	 moveto= Normalize( Vector((float)(1.f/(-50+rand()%100)), (float)(1.f / (-50+rand() % 100)), 0)) ;
 	 oobb = {-size/2,size/2,size/2,-size/2};
@@ -52,10 +51,9 @@ public:
 	Vector GetColor() { return color; }
 	float Getalpha() { return alpha; }
 	float GetSpeed() { return speed; }
-	int GetIndex() { return m_index; }
 	Vector GetMove() { return moveto; }
 	float GetLife() { return Life; }
-	int GetParent() { return m_pParent; }
+	float GetMaxLife() { return Life; }
 	int GetTeam() { return teamNum; }
 	OOBB GetOOBB() { 
 		OOBB result;
@@ -66,13 +64,14 @@ public:
 		return result;
 	}
 	int GetType() { return type; }
+	
+
 
 	void Damage(float damage) { Life -= damage; }
-	void SetParent(int p) { m_pParent = p; }
-	void SetIndex(int p) { m_index = p; }
 	void SetColor(Vector col) { color = col; }
 	void SetType(int T) { type = T; }
 	void SetMove(Vector M) { moveto = M; }
+	void SetMaxLife(float L) { Life= MaxLife = L; }
 	void SetLife(float L) { Life = L; }
 	void SetSpeed(float S) { speed = S; }
 	void SetPosition(float px, float py) { position.x = px, position.y = py; }

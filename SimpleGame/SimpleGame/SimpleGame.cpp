@@ -102,11 +102,11 @@ int main(int argc, char **argv)
 
 	g_Renderer = new Renderer(WINW, WINH);
 	Scene = new SceneMgr(g_Renderer);
-	Scene->AddObject(Vector(0, 350, 0)    , BUILDING, 1);
-	Scene->AddObject(Vector(-200, 350, 0), BUILDING, 1);
-	Scene->AddObject(Vector(200, 350, 0), BUILDING, 1);
-
-	Scene->AddObject(Vector(0,	  -350, 0),     BUILDING, 2 );
+	Scene->AddObject(Vector(0, 300, 0)    , BUILDING, 1);
+	Scene->AddObject(Vector(-200, 300, 0), BUILDING, 1);
+	Scene->AddObject(Vector(200, 300, 0), BUILDING, 1);
+	
+	Scene->AddObject(Vector(0,	  -350, 0), BUILDING, 2 );
 	Scene->AddObject(Vector(-200, -350, 0), BUILDING, 2 );
 	Scene->AddObject(Vector(200,  -350, 0), BUILDING, 2 );
 
