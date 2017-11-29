@@ -7,4 +7,6 @@
 *.exe
 *.pdb
 .vs/
+.release/
+.debug/
 

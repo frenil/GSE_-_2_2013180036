@@ -7,13 +7,19 @@
 class SceneMgr
 {
 private:
+	CGameObject* m_Back;
 	vector<CGameObject> obj;
 	int m_nObject;
 	float shoottime;
 	float settime;
 	Renderer* m_pRendertarget;
 	GLuint m_BuildingTex[2];
+	GLuint m_CharacterTex[2];
+	GLuint m_BackGround;
+	GLuint m_ParticleTex;
 	int m_nIndex;
+
+	float m_fParticleTime{ 0 };
 
 public:
 	SceneMgr(Renderer* ren);

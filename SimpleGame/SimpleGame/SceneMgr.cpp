@@ -13,10 +13,20 @@ SceneMgr::SceneMgr(Renderer* ren)
 	m_nIndex = 0;
 	m_BuildingTex[0] = ren->CreatePngTexture("./resource/Buckler.png");
 	m_BuildingTex[1] = ren->CreatePngTexture("./resource/Kite Shield.png");
+	m_BackGround = ren->CreatePngTexture("./resource/images.png");
+	m_CharacterTex[0] = ren->CreatePngTexture("./resource/goblin.png");
+	m_CharacterTex[1] = ren->CreatePngTexture("./resource/player.png");
+	m_ParticleTex = ren->CreatePngTexture("./resource/img.png");
+		
 	for (int i = 0; i < 10; ++i) {
 		Vector pos = Vector(-225+(i*50), 0, 0);
 		AddObject(pos, WALL, -1);
 	}
+	m_Back = new CGameObject(Vector(0, 0, 0), 800, Vector(1, 1, 1), 1, BACK, 0.6f);
+	m_Back->SetMaxLife(500);
+	m_Back->SetSpeed(0);
+
+	m_Back->SetTexture(m_BackGround);
 }
 
 
@@ -26,6 +36,10 @@ SceneMgr::~SceneMgr()
 
 void SceneMgr::Render()
 {
+	
+	m_Back->Render(m_pRendertarget);
+	
+
 	for (auto it = obj.begin(); it != obj.end(); ++it) {
 		it->Render(m_pRendertarget);
 	}
@@ -33,6 +47,7 @@ void SceneMgr::Render()
 
 void SceneMgr::Update(float timeelapsed)
 {
+	m_fParticleTime += timeelapsed;
 	shoottime += timeelapsed;
 	settime += timeelapsed;
 	////////////////////////////자동 생성
@@ -145,9 +160,12 @@ CGameObject SceneMgr::AddObject(Vector pos, int type, int tnum, int p)
 	case CHARACTER:
 		if (tnum == 1) color = Vector(1, 0, 0);
 		else if (tnum == 2) color = Vector(0, 0, 1);
-		addobj = CGameObject(pos, 20, color, 1, type,0.5f);
+		addobj = CGameObject(pos, 30, color, 1, type,0.5f);
 		addobj.SetMaxLife(15);
 		addobj.SetSpeed(300);
+
+		if (tnum == 1) addobj.SetTexture(m_CharacterTex[0]);
+		else if (tnum == 2) addobj.SetTexture(m_CharacterTex[1]);
 		break;
 	case BUILDING:
 
@@ -167,6 +185,7 @@ CGameObject SceneMgr::AddObject(Vector pos, int type, int tnum, int p)
 		addobj.SetMaxLife(20);
 		addobj.SetSpeed(600);
 		addobj.SetMove(Vector((float)(rand() % (100))-50, (float)(rand() % (100)) - 50, 0).Normalize());
+		addobj.SetParticle(m_ParticleTex);
 		break;
 	case ARROW:
 		if (tnum == 1) color = Vector(0.5f, 0.2f, 0.7f);

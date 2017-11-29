@@ -24,5 +24,6 @@ enum {
 	BUILDING,
 	BULLET,
 	ARROW,
-	WALL
+	WALL,
+	BACK,
 };

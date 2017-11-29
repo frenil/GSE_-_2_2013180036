@@ -5,6 +5,16 @@
 
 class CGameObject
 {
+	enum {
+		DOWN,
+		LEFT,
+		RIGHT,
+		UP
+	};
+protected:
+	float m_fTick{ 0 };
+	float m_eDir{ DOWN };
+
 protected:
 	int teamNum;
 
@@ -21,6 +31,7 @@ protected:
 	float timer;
 	float Dlevel;
 	GLuint m_Texture = NULL;
+	GLuint m_ParticleTex = NULL;
 	OOBB oobb;
 public:
 	bool colided;
@@ -34,7 +45,7 @@ public:
 	 oobb = {-size/2,size/2,size/2,-size/2};
 	 timer = 0;
 	}
-	~CGameObject();
+	virtual ~CGameObject();
 
 
 
@@ -80,6 +91,7 @@ public:
 
 
 	void SetTexture(GLuint tex) { m_Texture = tex; }
+	void SetParticle(GLuint tex) { m_ParticleTex = tex; }
 
 	void Translate(Vector v) { position = position + v; }
 	void MultipleScale(float num) { size *= num; }
@@ -88,4 +100,25 @@ public:
 
 	virtual void Render(Renderer* ren);
 	virtual void Update(float timeelapsed);
+};
+
+class CCharacter :public CGameObject
+{
+	enum {
+		DOWN,
+		LEFT,
+		RIGHT,
+		UP
+	};
+protected:
+	float m_fTick{ 0 };
+	float m_eDir{ DOWN };
+public:
+	CCharacter() {}
+	CCharacter(Vector pos, float s, Vector col, float a, int t, float level) : CGameObject(pos, s, col, a, t, level) {
+		
+	}
+	virtual ~CCharacter();
+	void Render(Renderer* ren) override;
+	void Update(float timeelapsed)override;
 };
