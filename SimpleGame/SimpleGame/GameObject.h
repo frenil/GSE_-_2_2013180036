@@ -111,14 +111,27 @@ class CCharacter :public CGameObject
 		UP
 	};
 protected:
-	float m_fTick{ 0 };
-	float m_eDir{ DOWN };
+	float	m_fTick{ 0 };
+	float	m_eDir{ DOWN };
+	int		m_CharType;
 public:
 	CCharacter() {}
 	CCharacter(Vector pos, float s, Vector col, float a, int t, float level) : CGameObject(pos, s, col, a, t, level) {
 		
 	}
 	virtual ~CCharacter();
-	void Render(Renderer* ren) override;
-	void Update(float timeelapsed)override;
+	virtual void Render(Renderer* ren) override;
+	virtual void Update(float timeelapsed)override;
+
+	void SetCharType(int type) { m_CharType = type; }
+	int GetCharType() {return m_CharType; }
 };
+
+class CWarrior :public CCharacter 
+{
+	CWarrior() {}
+	CWarrior(Vector pos, float s, Vector col, float a, int t, float level) : CCharacter(pos, s, col, a, t, level) {}
+	virtual ~CWarrior();
+	virtual void Update(float timeelapsed)override;
+};
+

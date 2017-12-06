@@ -1,4 +1,23 @@
-﻿  GameObject.cpp
-c:\users\hwihyun\desktop\17년도 2학기\겜소공\gse_-_2_2013180036\simplegame\simplegame\gameobject.cpp(48): warning C4244: '인수': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+﻿  SceneMgr.cpp
+c:\users\hwihyun\desktop\17년도 2학기\겜소공\gse_-_2_2013180036\simplegame\simplegame\dependencies\freeglut_std.h(203): warning C4005: 'GLUT_STROKE_ROMAN': 매크로 재정의
+  c:\users\hwihyun\desktop\17년도 2학기\겜소공\gse_-_2_2013180036\simplegame\simplegame\stdafx.h(13): note: 'GLUT_STROKE_ROMAN'의 이전 정의를 참조하십시오.
+c:\users\hwihyun\desktop\17년도 2학기\겜소공\gse_-_2_2013180036\simplegame\simplegame\dependencies\freeglut_std.h(204): warning C4005: 'GLUT_STROKE_MONO_ROMAN': 매크로 재정의
+  c:\users\hwihyun\desktop\17년도 2학기\겜소공\gse_-_2_2013180036\simplegame\simplegame\stdafx.h(14): note: 'GLUT_STROKE_MONO_ROMAN'의 이전 정의를 참조하십시오.
+c:\users\hwihyun\desktop\17년도 2학기\겜소공\gse_-_2_2013180036\simplegame\simplegame\dependencies\freeglut_std.h(205): warning C4005: 'GLUT_BITMAP_9_BY_15': 매크로 재정의
+  c:\users\hwihyun\desktop\17년도 2학기\겜소공\gse_-_2_2013180036\simplegame\simplegame\stdafx.h(15): note: 'GLUT_BITMAP_9_BY_15'의 이전 정의를 참조하십시오.
+c:\users\hwihyun\desktop\17년도 2학기\겜소공\gse_-_2_2013180036\simplegame\simplegame\dependencies\freeglut_std.h(206): warning C4005: 'GLUT_BITMAP_8_BY_13': 매크로 재정의
+  c:\users\hwihyun\desktop\17년도 2학기\겜소공\gse_-_2_2013180036\simplegame\simplegame\stdafx.h(16): note: 'GLUT_BITMAP_8_BY_13'의 이전 정의를 참조하십시오.
+c:\users\hwihyun\desktop\17년도 2학기\겜소공\gse_-_2_2013180036\simplegame\simplegame\dependencies\freeglut_std.h(207): warning C4005: 'GLUT_BITMAP_TIMES_ROMAN_10': 매크로 재정의
+  c:\users\hwihyun\desktop\17년도 2학기\겜소공\gse_-_2_2013180036\simplegame\simplegame\stdafx.h(17): note: 'GLUT_BITMAP_TIMES_ROMAN_10'의 이전 정의를 참조하십시오.
+c:\users\hwihyun\desktop\17년도 2학기\겜소공\gse_-_2_2013180036\simplegame\simplegame\dependencies\freeglut_std.h(208): warning C4005: 'GLUT_BITMAP_TIMES_ROMAN_24': 매크로 재정의
+  c:\users\hwihyun\desktop\17년도 2학기\겜소공\gse_-_2_2013180036\simplegame\simplegame\stdafx.h(18): note: 'GLUT_BITMAP_TIMES_ROMAN_24'의 이전 정의를 참조하십시오.
+c:\users\hwihyun\desktop\17년도 2학기\겜소공\gse_-_2_2013180036\simplegame\simplegame\dependencies\freeglut_std.h(209): warning C4005: 'GLUT_BITMAP_HELVETICA_10': 매크로 재정의
+  c:\users\hwihyun\desktop\17년도 2학기\겜소공\gse_-_2_2013180036\simplegame\simplegame\stdafx.h(19): note: 'GLUT_BITMAP_HELVETICA_10'의 이전 정의를 참조하십시오.
+c:\users\hwihyun\desktop\17년도 2학기\겜소공\gse_-_2_2013180036\simplegame\simplegame\dependencies\freeglut_std.h(210): warning C4005: 'GLUT_BITMAP_HELVETICA_12': 매크로 재정의
+  c:\users\hwihyun\desktop\17년도 2학기\겜소공\gse_-_2_2013180036\simplegame\simplegame\stdafx.h(20): note: 'GLUT_BITMAP_HELVETICA_12'의 이전 정의를 참조하십시오.
+c:\users\hwihyun\desktop\17년도 2학기\겜소공\gse_-_2_2013180036\simplegame\simplegame\dependencies\freeglut_std.h(211): warning C4005: 'GLUT_BITMAP_HELVETICA_18': 매크로 재정의
+  c:\users\hwihyun\desktop\17년도 2학기\겜소공\gse_-_2_2013180036\simplegame\simplegame\stdafx.h(21): note: 'GLUT_BITMAP_HELVETICA_18'의 이전 정의를 참조하십시오.
+c:\users\hwihyun\desktop\17년도 2학기\겜소공\gse_-_2_2013180036\simplegame\simplegame\scenemgr.cpp(22): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\hwihyun\desktop\17년도 2학기\겜소공\gse_-_2_2013180036\simplegame\simplegame\scenemgr.cpp(62): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
   SimpleGame.vcxproj -> C:\Users\Hwihyun\Desktop\17년도 2학기\겜소공\GSE_-_2_2013180036\SimpleGame\x64\Debug\SimpleGame.exe
   SimpleGame.vcxproj -> C:\Users\Hwihyun\Desktop\17년도 2학기\겜소공\GSE_-_2_2013180036\SimpleGame\x64\Debug\SimpleGame.pdb (Partial PDB)

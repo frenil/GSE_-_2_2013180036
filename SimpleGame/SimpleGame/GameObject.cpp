@@ -23,16 +23,16 @@ void CGameObject::Update(float timeelapsed)
 		if (position.y >= WINH / 2 || position.y <= -(WINH / 2))
 			moveto.y = moveto.y*-1;
 	}
-	if (type == CHARACTER) {
+	/*if (type == CHARACTER) {
 		if (moveto.y > 0) {
 			m_eDir = UP;
 		}
 		else
 			m_eDir = DOWN;
-		m_fTick += (timeelapsed*5);
+		m_fTick += (timeelapsed * 5);
 		if (m_fTick > 4.f)
 			m_fTick -= 4.f;
-	}
+	}*/
 }
 
 
@@ -53,7 +53,7 @@ void CGameObject::Render(Renderer* ren)
 	else
 		ren->DrawSolidRect(position.x, position.y, position.z, size, color.x, color.y, color.z, alpha, Dlevel);
 	if (m_ParticleTex) {
-		ren->DrawParticle(position.x, position.y, position.z, size, 1, 1, 1, 1, -moveto.x*20, -moveto.y*20, m_ParticleTex, timer);
+		ren->DrawParticle(position.x, position.y, position.z, size, 1, 1, 1, 1, -moveto.x * 20, -moveto.y * 20, m_ParticleTex, timer);
 	}
 	if (type == BUILDING || type == CHARACTER) {
 		Vector tmpCol;
@@ -71,9 +71,27 @@ CCharacter::~CCharacter()
 
 void CCharacter::Render(Renderer * ren)
 {
-	}
+}
 
 void CCharacter::Update(float timeelapsed)
 {
-	
+	timer += timeelapsed;
+	position = position + (moveto*speed*timeelapsed);
+	if (moveto.y > 0) {
+		m_eDir = UP;
+	}
+	else
+		m_eDir = DOWN;
+	m_fTick += (timeelapsed * 5);
+	if (m_fTick > 4.f)
+		m_fTick -= 4.f;
+}
+
+CWarrior::~CWarrior()
+{
+}
+
+void CWarrior::Update(float timeelapsed)
+{
+	CCharacter::Update(timeelapsed);
 }
