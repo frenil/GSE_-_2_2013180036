@@ -20,7 +20,6 @@ public:
 		return Vector(x*num, y *num, z *num);
 	}
 	Vector Normalize() {
-		
 		float size = sqrt(x*x + y*y + z*z);
 		return Vector(x / size, y / size, z / size);
 	}
