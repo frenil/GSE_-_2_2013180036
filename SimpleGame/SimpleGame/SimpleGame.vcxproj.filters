@@ -22,9 +22,6 @@
     <Filter Include="소스 파일\Object">
       <UniqueIdentifier>{215f123d-752d-4868-a2e9-7f2de2b64438}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\Sound">
-      <UniqueIdentifier>{7705e381-cae9-4fae-ac3a-e0f2dff6b10b}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -48,14 +45,11 @@
     <ClInclude Include="Mesh.h">
       <Filter>소스 파일\Mesh</Filter>
     </ClInclude>
-    <ClInclude Include="LoadPng.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Sound.h">
-      <Filter>소스 파일\Sound</Filter>
-    </ClInclude>
     <ClInclude Include="GameObject.h">
       <Filter>소스 파일\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="LoadPng.h">
+      <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -82,9 +76,6 @@
     </ClCompile>
     <ClCompile Include="LoadPng.cpp">
       <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Sound.cpp">
-      <Filter>소스 파일\Sound</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

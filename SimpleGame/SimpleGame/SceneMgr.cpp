@@ -27,10 +27,6 @@ SceneMgr::SceneMgr(Renderer* ren)
 	m_Back->SetSpeed(0);
 
 	m_Back->SetTexture(m_BackGround);
-	m_sound = new Sound();
-	soundBG = m_sound->CreateSound("./Dependencies/SoundSamples/MF-W-90.XM");
-	m_sound->PlaySound(soundBG, true, 0.2f);
-
 }
 
 
@@ -47,9 +43,6 @@ void SceneMgr::Render()
 	for (auto it = obj.begin(); it != obj.end(); ++it) {
 		it->Render(m_pRendertarget);
 	}
-	m_pRendertarget->DrawText(-200.0f,0.0f, GLUT_BITMAP_TIMES_ROMAN_24
-		, 1.0f, 0.0f, 0.0f, "Text Daje");
-
 }
 
 void SceneMgr::Update(float timeelapsed)
@@ -148,7 +141,6 @@ void SceneMgr::Update(float timeelapsed)
 			}
 		}
 	}
-	//////////////////////////////////////»èÁ¦
 	for (auto it = obj.begin(); it != obj.end(); ) {
 		if (it->colided && (it->GetType() == CHARACTER || it->GetType() == BULLET || it->GetType() == ARROW)) {
 			auto it2 = it;
@@ -165,7 +157,16 @@ CGameObject SceneMgr::AddObject(Vector pos, int type, int tnum, int p)
 	CGameObject addobj;
 	Vector color;
 	switch (type) {
-	
+	case CHARACTER:
+		if (tnum == 1) color = Vector(1, 0, 0);
+		else if (tnum == 2) color = Vector(0, 0, 1);
+		addobj = CGameObject(pos, 30, color, 1, type,0.5f);
+		addobj.SetMaxLife(15);
+		addobj.SetSpeed(300);
+
+		if (tnum == 1) addobj.SetTexture(m_CharacterTex[0]);
+		else if (tnum == 2) addobj.SetTexture(m_CharacterTex[1]);
+		break;
 	case BUILDING:
 
 		color = Vector(1, 1, 1);
@@ -200,37 +201,6 @@ CGameObject SceneMgr::AddObject(Vector pos, int type, int tnum, int p)
 		addobj.SetMaxLife(10);
 		addobj.SetMove(Vector(0,0,0));
 		addobj.SetSpeed(0);
-	}
-	addobj.SetTeam(tnum);
-	obj.push_back(addobj);
-	++m_nObject;
-	return addobj;
-}
-
-CGameObject SceneMgr::AddCharacter(Vector pos, int type, int tnum, int p)
-{
-	CGameObject addobj;
-	Vector color;
-	switch (type) {
-	
-	case Ground:
-		if (tnum == 1) color = Vector(1, 0, 0);
-		else if (tnum == 2) color = Vector(0, 0, 1);
-		addobj = CCharacter(pos, 30, color, 1, type, 0.5f);
-		addobj.SetMaxLife(15);
-		addobj.SetSpeed(50);
-
-		 addobj.SetTexture(m_CharacterTex[0]);
-		break;
-	case Flying:
-		if (tnum == 1) color = Vector(1, 0, 0);
-		else if (tnum == 2) color = Vector(0, 0, 1);
-		addobj = CCharacter(pos, 30, color, 1, type, 0.5f);
-		addobj.SetMaxLife(15);
-		addobj.SetSpeed(100);
-
-		addobj.SetTexture(m_CharacterTex[1]);
-		break;
 	}
 	addobj.SetTeam(tnum);
 	obj.push_back(addobj);
